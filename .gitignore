@@ -1,0 +1,22 @@
+# .NET build output
+bin/
+obj/
+
+# Visual Studio
+.vs/
+
+# JetBrains Rider
+.idea/
+
+# User-specific files
+*.user
+*.suo
+
+# NuGet packages
+*.nupkg
+
+# SQLite database
+*.db
+
+# Local development settings (if they contain secrets)
+appsettings.Development.json
