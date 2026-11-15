@@ -46,7 +46,7 @@ public class AnalyticsRepository : IAnalyticsRepository
     {
         return await _db.Categories
             .AsNoTracking()
-            .FirstOrDefaultAsync(c => c.Id == categoryId)
+            .FirstOrDefaultAsync(c => c.Id == categoryId);
     }
 
     public async Task<List<Category>> GetCategoriesAsync()

@@ -1,8 +1,11 @@
 ﻿
 
+using Mappeinnlevering_1.DTOs;
+using Mappeinnlevering_1.Models.Enums;
+
 namespace Mappeinnlevering_1.Services.Interfaces;
 
 public interface IAnalyticsService
 {
-    
+    Task<PriceSuggestionDto?> GetPriceSuggestionAsync(int categoryId, Condition condition);
 }
