@@ -31,4 +31,9 @@ public class Listing
     public int CategoryId { get; set; }
 
     public string SellerId { get; set; } = string.Empty;
+
+
+
+    public List<Offer> Offers { get; set; } = new();
+    public List<PriceChange> PriceChanges { get; set; } = new();
 }
