@@ -18,3 +18,24 @@ public class PriceSuggestionDto
     
     
 }
+
+// B. Prisvurdering
+public enum PriceRating
+{
+    Low,
+    Normal,
+    High,
+    Unknown
+}
+
+public class PriceEvaluationDto
+{
+    public int ListingId { get; set; }
+    public PriceRating Rating { get; set; }
+    public double NormalizedPrice { get; set; }
+    public double? LowerLimit { get; set; }
+    public double? UpperLimit { get; set; }
+    public int NumberOfSales { get; set; }
+    
+    
+}
