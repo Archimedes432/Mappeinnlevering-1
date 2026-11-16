@@ -15,8 +15,6 @@ public class PriceSuggestionDto
     public int? SuggestedPrice { get; set;  }
     public int NumberOfSales { get; set;  }
     public string? Message { get; set;  }
-    
-    
 }
 
 // B. Prisvurdering
@@ -36,6 +34,19 @@ public class PriceEvaluationDto
     public double? LowerLimit { get; set; }
     public double? UpperLimit { get; set; }
     public int NumberOfSales { get; set; }
-    
-    
+}
+
+public class CategoryStatsDto
+{ 
+    public int CategoryId { get; set; } 
+    public string CategoryName { get; set; } = ""; 
+    public int ActiveCount { get; set; } 
+    public int SoldCount { get; set; } 
+    public int RemoveCount { get; set; } 
+    public double? AverageSoldPrice{ get; set; } 
+    public double? MedianSoldPrice { get; set; } 
+    public double? StandardDeviationSoldPrice { get; set; } 
+    public double? AverageDaysToSell { get; set; } 
+    public double? AverageDiscountPercent { get; set; } 
+    public double? SalesRate { get; set; } 
 }

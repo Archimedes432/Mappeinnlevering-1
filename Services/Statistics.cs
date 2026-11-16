@@ -35,5 +35,29 @@ public abstract class Statistics
 
         return sorted[lower] + fraction * (sorted[lower + 1] - sorted[lower]);
     }
+
+
+    public static double Mean(List<double> values)
+    {
+        return values.Average();
+    }
     
+    // Standardavvik for salgspris
+
+    public static double StandardDeviation(List<double> values)
+    {
+        if (values.Count < 2)
+        {
+            return 0; 
+        }
+
+        double mean = values.Average();
+        double sum = 0;
+        foreach (double v in values)
+        {
+            sum += (v - mean) * (v - mean);
+        }
+
+        return Math.Sqrt(sum / (values.Count - 1));
+    }
 }

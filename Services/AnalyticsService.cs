@@ -99,6 +99,84 @@ public class AnalyticsService : IAnalyticsService
     return result;
   }
 
+  public async Task<CategoryStatsDto?> GetCategoryStatsAsync(int categoryId)
+  {
+    Category? category = await _repo.GetCategoryAsync(categoryId);
+    if (category == null)
+    {
+      return null;
+    }
+
+    List<Listing> listings = await _repo.GetListingsInCategoryAsync(categoryId);
+
+    List<Listing> sold = listings
+      .Where(l => l.Status == ListingStatus.Sold && l.SoldPrice != null && l.SoldDate != null)
+      .ToList();
+
+    int active = listings.Count(l => l.Status == ListingStatus.Active);
+    int removed = listings.Count(l => l.Status == ListingStatus.Removed);
+
+    CategoryStatsDto stats = new CategoryStatsDto();
+    stats.CategoryId = category.Id;
+    stats.CategoryName = category.Name;
+    stats.ActiveCount = active;
+    stats.SoldCount = sold.Count;
+    stats.RemoveCount = removed;
+
+    int total = sold.Count + active + removed;
+    if (total > 0)
+    {
+      stats.SalesRate = Math.Round((double)sold.Count / 4);
+    }
+
+    if (sold.Count == 0)
+    {
+      return stats;
+    }
+
+    List<double> soldPrices = new List<double>();
+    List<double> daysToSell = new List<double>();
+    List<double> discounts = new List<double>();
+
+    foreach (Listing l in sold)
+    {
+      int soldPrice = l.SoldPrice.GetValueOrDefault();
+      DateTime soldDate = l.SoldDate.GetValueOrDefault();
+      int original = OriginalPrice(l);
+
+      soldPrices.Add(soldPrice);
+      daysToSell.Add((soldDate - l.CreateDate).TotalDays);
+      discounts.Add((original - soldPrice) * 100.00 / original);
+    }
+
+    stats.AverageSoldPrice = Math.Round(Statistics.Mean(soldPrices), 2);
+    stats.MedianSoldPrice = Math.Round(Statistics.Median(soldPrices), 2);
+    stats.AverageDaysToSell = Math.Round(daysToSell.Average(), 2);
+    stats.AverageDiscountPercent = Math.Round(discounts.Average(), 2);
+
+    if (soldPrices.Count >= 2)
+    {
+      stats.StandardDeviationSoldPrice = Math.Round(Statistics.StandardDeviation(soldPrices), 2);
+    }
+    return stats;
+  }
+
+  public async Task<List<CategoryStatsDto>> GetOverviewAsync()
+  {
+    List<CategoryStatsDto> result = new List<CategoryStatsDto>();
+    List<Category> categories = await _repo.GetCategoriesAsync();
+
+    foreach (Category category in categories)
+    {
+      CategoryStatsDto? stats = await GetCategoryStatsAsync(category.Id);
+      if (stats != null)
+      {
+        result.Add(stats);
+      }
+    }
+    return result;
+  }
+
   // Hjelpemetoder
   private static List<double> NormalizedSoldPrices(List<Listing> sold)
   {
@@ -118,5 +196,18 @@ public class AnalyticsService : IAnalyticsService
     return (int)rounded;
   }
 
+  private static int OriginalPrice(Listing listing)
+  {
+    if (listing.PriceChanges.Count == 0)
+    {
+      return listing.Price; 
+    }
 
+    PriceChange first = listing.PriceChanges.OrderBy(pc => pc.ChangeDate).First();
+    return first.OldPrice;
+    
+  }
+
+  
+  
 }
