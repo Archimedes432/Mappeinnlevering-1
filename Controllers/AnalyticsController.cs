@@ -29,7 +29,26 @@ public class AnalyticsController : ControllerBase
         {
             return NotFound();
         }
+        return Ok(result);
+    }
 
+
+    [HttpGet("categories/{id:int}/stats")]
+    public async Task<ActionResult<CategoryStatsDto>> GetCategoryStats(int id)
+    {
+        CategoryStatsDto? result = await _analytics.GetCategoryStatsAsync(id);
+        
+        if (result == null) 
+        { 
+            return NotFound();  
+        } 
+        return Ok(result);
+        }
+    
+    [HttpGet("overview")]
+    public async Task<ActionResult<List<CategoryStatsDto>>> GetOverview()
+    {
+        List<CategoryStatsDto> result = await _analytics.GetOverviewAsync();
         return Ok(result);
     }
 }
