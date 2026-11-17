@@ -11,4 +11,6 @@ public class PriceChange
     public int NewPrice { get; set; }
     
     public DateTime ChangeDate { get; set; }
+    
+    public Listing? Listing { get; set; }
 }

@@ -107,6 +107,9 @@ namespace Mappeinnlevering_1.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("BuyerId")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("ListingId")
                         .HasColumnType("INTEGER");
 
@@ -115,6 +118,10 @@ namespace Mappeinnlevering_1.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BuyerId");
+
+                    b.HasIndex("ListingId");
 
                     b.ToTable("Favorites");
                 });
@@ -164,6 +171,10 @@ namespace Mappeinnlevering_1.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("SellerId");
+
                     b.ToTable("Listings");
                 });
 
@@ -191,6 +202,10 @@ namespace Mappeinnlevering_1.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BuyerId");
+
+                    b.HasIndex("ListingId");
+
                     b.ToTable("Offers");
                 });
 
@@ -213,6 +228,8 @@ namespace Mappeinnlevering_1.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ListingId");
 
                     b.ToTable("PriceChanges");
                 });
@@ -345,6 +362,72 @@ namespace Mappeinnlevering_1.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Mappeinnlevering_1.Models.Favorite", b =>
+                {
+                    b.HasOne("Mappeinnlevering_1.Models.ApplicationUser", "Buyer")
+                        .WithMany("Favorites")
+                        .HasForeignKey("BuyerId");
+
+                    b.HasOne("Mappeinnlevering_1.Models.Listing", "Listing")
+                        .WithMany("Favorites")
+                        .HasForeignKey("ListingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Buyer");
+
+                    b.Navigation("Listing");
+                });
+
+            modelBuilder.Entity("Mappeinnlevering_1.Models.Listing", b =>
+                {
+                    b.HasOne("Mappeinnlevering_1.Models.Category", "Category")
+                        .WithMany("Listings")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mappeinnlevering_1.Models.ApplicationUser", "Seller")
+                        .WithMany("Listing")
+                        .HasForeignKey("SellerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Seller");
+                });
+
+            modelBuilder.Entity("Mappeinnlevering_1.Models.Offer", b =>
+                {
+                    b.HasOne("Mappeinnlevering_1.Models.ApplicationUser", "Buyer")
+                        .WithMany("Offer")
+                        .HasForeignKey("BuyerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mappeinnlevering_1.Models.Listing", "Listing")
+                        .WithMany("Offers")
+                        .HasForeignKey("ListingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Buyer");
+
+                    b.Navigation("Listing");
+                });
+
+            modelBuilder.Entity("Mappeinnlevering_1.Models.PriceChange", b =>
+                {
+                    b.HasOne("Mappeinnlevering_1.Models.Listing", "Listing")
+                        .WithMany("PriceChanges")
+                        .HasForeignKey("ListingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Listing");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -394,6 +477,29 @@ namespace Mappeinnlevering_1.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Mappeinnlevering_1.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("Favorites");
+
+                    b.Navigation("Listing");
+
+                    b.Navigation("Offer");
+                });
+
+            modelBuilder.Entity("Mappeinnlevering_1.Models.Category", b =>
+                {
+                    b.Navigation("Listings");
+                });
+
+            modelBuilder.Entity("Mappeinnlevering_1.Models.Listing", b =>
+                {
+                    b.Navigation("Favorites");
+
+                    b.Navigation("Offers");
+
+                    b.Navigation("PriceChanges");
                 });
 #pragma warning restore 612, 618
         }

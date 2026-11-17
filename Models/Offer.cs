@@ -15,4 +15,8 @@ public class Offer
     public OfferStatus Status { get; set; }
     
     public DateTime CreatedDate { get; set; }
+    
+    public Listing? Listing { get; set; }
+    
+    public ApplicationUser?  Buyer { get; set; }
 }

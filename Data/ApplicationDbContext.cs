@@ -16,4 +16,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Offer> Offers => Set<Offer>();
     public DbSet<PriceChange> PriceChanges => Set<PriceChange>();
     public DbSet<Favorite> Favorites => Set<Favorite>();
+    
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+        //builder.Entity<Category>()
+    }
 }
