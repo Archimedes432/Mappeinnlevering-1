@@ -10,5 +10,5 @@ public class Favorite
     
     public Listing? Listing {  get; set; }
     
-    public ApplicationUser? Buyer { get; set; }
+    public ApplicationUser? User { get; set; }
 }

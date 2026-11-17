@@ -7,7 +7,7 @@ using System.Security.Claims;
 namespace Mappeinnlevering_1.Controllers;
 
 [ApiController]
-[Route("api(listings")]
+[Route("api/listings")]
 public class ListingsController : ControllerBase
 {
     private readonly IListingService _service;

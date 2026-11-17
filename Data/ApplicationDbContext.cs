@@ -20,6 +20,40 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        //builder.Entity<Category>()
+
+        builder.Entity<Listing>()
+            .HasOne(l => l.Category)
+            .WithMany(c => c.Listings)
+            .HasForeignKey(l => l.CategoryId);
+
+        builder.Entity<Listing>()
+            .HasOne(l => l.Seller)
+            .WithMany(u => u.Listings)
+            .HasForeignKey(l => l.SellerId);
+
+        builder.Entity<Offer>()
+            .HasOne(o => o.Listing)
+            .WithMany(l => l.Offers)
+            .HasForeignKey(o => o.ListingId);
+
+        builder.Entity<Offer>()
+            .HasOne(o => o.Buyer)
+            .WithMany(u => u.Offers)
+            .HasForeignKey(o => o.BuyerId);
+
+        builder.Entity<PriceChange>()
+            .HasOne(pc => pc.Listing)
+            .WithMany(l => l.PriceChanges)
+            .HasForeignKey(pc => pc.ListingId);
+
+        builder.Entity<Favorite>()
+            .HasOne(f => f.Listing)
+            .WithMany(l => l.Favorites)
+            .HasForeignKey(f => f.ListingId);
+
+        builder.Entity<Favorite>()
+            .HasOne(f => f.User)
+            .WithMany(u => u.Favorites)
+            .HasForeignKey(f => f.UserId);
     }
 }
