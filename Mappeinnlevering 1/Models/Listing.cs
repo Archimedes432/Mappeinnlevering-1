@@ -22,7 +22,7 @@ public class Listing
     
     public string? ImageUrl { get; set; }
     
-    public DateTime CreateDate { get; set; }
+    public DateTime CreatedDate { get; set; }
     
     public DateTime? SoldDate { get; set; }
     

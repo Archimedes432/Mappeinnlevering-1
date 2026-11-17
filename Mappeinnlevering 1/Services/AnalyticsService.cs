@@ -145,7 +145,7 @@ public class AnalyticsService : IAnalyticsService
       int original = OriginalPrice(l);
 
       soldPrices.Add(soldPrice);
-      daysToSell.Add((soldDate - l.CreateDate).TotalDays);
+      daysToSell.Add((soldDate - l.CreatedDate).TotalDays);
       discounts.Add((original - soldPrice) * 100.00 / original);
     }
 
@@ -203,7 +203,7 @@ public class AnalyticsService : IAnalyticsService
       return listing.Price; 
     }
 
-    PriceChange first = listing.PriceChanges.OrderBy(pc => pc.ChangeDate).First();
+    PriceChange first = listing.PriceChanges.OrderBy(pc => pc.ChangedDate).First();
     return first.OldPrice;
     
   }
