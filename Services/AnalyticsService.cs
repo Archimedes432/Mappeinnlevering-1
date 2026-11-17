@@ -203,7 +203,7 @@ public class AnalyticsService : IAnalyticsService
       return listing.Price; 
     }
 
-    PriceChange first = listing.PriceChanges.OrderBy(pc => pc.ChangeDate).First();
+    PriceChange first = listing.PriceChanges.OrderBy(pc => pc.ChangedDate).First();
     return first.OldPrice;
     
   }

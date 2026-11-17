@@ -107,9 +107,6 @@ namespace Mappeinnlevering_1.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("BuyerId")
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("ListingId")
                         .HasColumnType("INTEGER");
 
@@ -119,9 +116,9 @@ namespace Mappeinnlevering_1.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BuyerId");
-
                     b.HasIndex("ListingId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Favorites");
                 });
@@ -364,19 +361,21 @@ namespace Mappeinnlevering_1.Migrations
 
             modelBuilder.Entity("Mappeinnlevering_1.Models.Favorite", b =>
                 {
-                    b.HasOne("Mappeinnlevering_1.Models.ApplicationUser", "Buyer")
-                        .WithMany("Favorites")
-                        .HasForeignKey("BuyerId");
-
                     b.HasOne("Mappeinnlevering_1.Models.Listing", "Listing")
                         .WithMany("Favorites")
                         .HasForeignKey("ListingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Buyer");
+                    b.HasOne("Mappeinnlevering_1.Models.ApplicationUser", "User")
+                        .WithMany("Favorites")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Listing");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Mappeinnlevering_1.Models.Listing", b =>
@@ -388,7 +387,7 @@ namespace Mappeinnlevering_1.Migrations
                         .IsRequired();
 
                     b.HasOne("Mappeinnlevering_1.Models.ApplicationUser", "Seller")
-                        .WithMany("Listing")
+                        .WithMany("Listings")
                         .HasForeignKey("SellerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -401,7 +400,7 @@ namespace Mappeinnlevering_1.Migrations
             modelBuilder.Entity("Mappeinnlevering_1.Models.Offer", b =>
                 {
                     b.HasOne("Mappeinnlevering_1.Models.ApplicationUser", "Buyer")
-                        .WithMany("Offer")
+                        .WithMany("Offers")
                         .HasForeignKey("BuyerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -483,9 +482,9 @@ namespace Mappeinnlevering_1.Migrations
                 {
                     b.Navigation("Favorites");
 
-                    b.Navigation("Listing");
+                    b.Navigation("Listings");
 
-                    b.Navigation("Offer");
+                    b.Navigation("Offers");
                 });
 
             modelBuilder.Entity("Mappeinnlevering_1.Models.Category", b =>

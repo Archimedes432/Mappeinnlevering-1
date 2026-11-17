@@ -2,9 +2,11 @@ using Mappeinnlevering_1.Data;
 using Mappeinnlevering_1.Models;
 using Mappeinnlevering_1.Repositories;
 using Mappeinnlevering_1.Repositories.Interfaces;
+using Mappeinnlevering_1.Seed;
 using Mappeinnlevering_1.Services;
 using Mappeinnlevering_1.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,11 +31,50 @@ builder.Services.AddScoped<IOfferService, OfferService>();
 
 builder.Services
     .AddIdentityApiEndpoints<ApplicationUser>()
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+// Seed data
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var userManager =
+        services.GetRequiredService<UserManager<ApplicationUser>>();
+
+    var roleManager =
+        services.GetRequiredService<RoleManager<IdentityRole>>();
+
+    var context =
+        services.GetRequiredService<ApplicationDbContext>();
+
+    await SeedData.SeedUsersAndRolesAsync(
+        userManager,
+        roleManager);
+
+    await SeedData.SeedCategoriesAsync(
+        context);
+    
+    await SeedData.SeedListingAsync(
+        context,
+        userManager);
+
+    await SeedData.SeedPriceChangesAsync(
+        context);
+    
+    await SeedData.SeedOffersAsync(
+        context,
+        userManager);
+    
+    await SeedData.SeedFavoritesAsync(
+        context,
+        userManager);
+}
+
 
 if (app.Environment.IsDevelopment())
 {
@@ -45,5 +86,13 @@ app.UseHttpsRedirection();
 app.MapIdentityApi<ApplicationUser>();
 
 app.MapControllers();
+
+app.Lifetime.ApplicationStarted.Register(() =>
+{
+    foreach (var url in app.Urls)
+    {
+        Console.WriteLine($"Now listening on: {url}");
+    }
+});
 
 app.Run();
