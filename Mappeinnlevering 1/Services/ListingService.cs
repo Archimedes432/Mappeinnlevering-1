@@ -28,7 +28,7 @@ public class ListingService : IListingService
             Condition = l.Condition,
             Status = l.Status,
             ImageUrl = l.ImageUrl,
-            CreateDate = l.CreateDate,
+            CreateDate = l.CreatedDate,
             SoldDate = l.SoldDate,
             SoldPrice = l.SoldPrice,
             CategoryId = l.CategoryId,
@@ -52,7 +52,7 @@ public class ListingService : IListingService
             Condition = listing.Condition,
             Status = listing.Status,
             ImageUrl = listing.ImageUrl,
-            CreateDate = listing.CreateDate,
+            CreateDate = listing.CreatedDate,
             SoldDate = listing.SoldDate,
             SoldPrice = listing.SoldPrice,
             CategoryId = listing.CategoryId,
@@ -73,7 +73,7 @@ public class ListingService : IListingService
             ImageUrl = dto.ImageUrl,
             CategoryId = dto.CategoryId,
             SellerId = sellerId,
-            CreateDate = DateTime.UtcNow,
+            CreatedDate = DateTime.UtcNow,
             Status = ListingStatus.Active
         };
 

@@ -162,7 +162,7 @@ public static class SeedData
                     ? ListingStatus.Sold
                     : ListingStatus.Active,
 
-                CreateDate =
+                CreatedDate =
                     DateTime.UtcNow.AddDays(-random.Next(1, 100)),
 
                 SoldDate = sold
@@ -188,7 +188,7 @@ public static class SeedData
             Price = 500000,
             Condition = Condition.Used,
             Status = ListingStatus.Active,
-            CreateDate = DateTime.UtcNow,
+            CreatedDate = DateTime.UtcNow,
             CategoryId = categories[1].Id,
             SellerId = users[0].Id
         });
@@ -223,7 +223,7 @@ public static class SeedData
                 ListingId = listing.Id,
                 OldPrice = oldPrice,
                 NewPrice = listing.Price,
-                ChangedDate = listing.CreateDate.AddDays(2)
+                ChangedDate = listing.CreatedDate.AddDays(2)
             });
         }
 
