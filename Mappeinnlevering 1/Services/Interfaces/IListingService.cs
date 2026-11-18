@@ -6,6 +6,8 @@ public interface IListingService
 {
     Task<List<ListingDtos>> GetAllAsync();
     
+    Task<List<ListingDtos>> GetMyListingsAsync(string sellerId);
+    
     Task<ListingDtos?> GetByIdAsync(int id);
     
     Task<ListingDtos> CreateAsync(

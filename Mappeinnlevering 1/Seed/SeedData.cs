@@ -104,99 +104,115 @@ public static class SeedData
 
     // Seed Listings
     public static async Task SeedListingAsync(
-        ApplicationDbContext context,
-        UserManager<ApplicationUser> userManager)
+    ApplicationDbContext context,
+    UserManager<ApplicationUser> userManager)
+{
+    if (context.Listings.Any())
+        return;
+
+    var users = userManager.Users.ToList();
+    var categories = context.Categories.ToList();
+
+    if (!users.Any() || !categories.Any())
+        return;
+
+    var random = new Random();
+
+    var listings = new List<Listing>();
+
+    for (int i = 1; i <= 40; i++)
     {
-        if (context.Listings.Any())
-            return;
+        // Hardcoded category distribution for analytics testing
+        Category category;
 
-        var users = userManager.Users.ToList();
-
-        var categories = context.Categories.ToList();
-
-        if (!users.Any() || !categories.Any())
-            return;
-
-        var random = new Random();
-
-        var listings = new List<Listing>();
-
-        for (int i = 1; i <= 40; i++)
+        if (i <= 10)
         {
-            // hardcoded category distribution
-            Category category;
-            if (i <= 10)
-            {
-                category = categories[0]; // Electronics
-            }
-            else if (i <= 17)
-            {
-                category = categories[1]; // Bike
-            }
-            else if (i <= 19)
-            {
-                category = categories[2]; // Furnature
-            }
-            else if (i == 20)
-            {
-                category = categories[3]; // Outdoor
-            }
-            else
-            {
-                category = categories[random.Next(categories.Count)];
-            }
-
-            var seller = users[random.Next(users.Count)];
-
-            bool sold = i <= 20;
-
-            listings.Add(new Listing()
-            {
-                Title = $"Vare {i}",
-                Description = $"Beskrivelse avcvare {i}",
-
-                Price = random.Next(100, 1500),
-                Condition = (Condition)random.Next(0, 4),
-
-                Status = sold
-                    ? ListingStatus.Sold
-                    : ListingStatus.Active,
-
-                CreatedDate =
-                    DateTime.UtcNow.AddDays(-random.Next(1, 100)),
-
-                SoldDate = sold
-                    ? DateTime.UtcNow.AddDays(
-                        -random.Next(1, 30))
-                    : null,
-                
-                SoldPrice = sold
-                    ? random.Next(100, 1500)
-                    : null,
-
-                CategoryId = category.Id,
-
-                SellerId = seller.Id
-            });
+            category = categories[0]; // Electronics
         }
-        
-        // Overpriced Item
+        else if (i <= 17)
+        {
+            category = categories[1]; // Bikes
+        }
+        else if (i <= 19)
+        {
+            category = categories[2]; // Furniture
+        }
+        else if (i == 20)
+        {
+            category = categories[3]; // Outdoor
+        }
+        else
+        {
+            category = categories[random.Next(categories.Count)];
+        }
+
+        var seller = users[random.Next(users.Count)];
+
+        bool sold = i <= 20;
+
+        // Ensure the listing is created before it can be sold
+        var createdDate = DateTime.UtcNow.AddDays(
+            -random.Next(30, 180));
+
+        DateTime? soldDate = null;
+
+        if (sold)
+        {
+            soldDate = createdDate.AddDays(
+                random.Next(1, 45));
+        }
+
         listings.Add(new Listing
         {
-            Title = "Overpriset sykkel",
-            Description = "Testannonse",
-            Price = 500000,
-            Condition = Condition.Used,
-            Status = ListingStatus.Active,
-            CreatedDate = DateTime.UtcNow,
-            CategoryId = categories[1].Id,
-            SellerId = users[0].Id
+            Title = $"Item {i}",
+            Description = $"Description for item {i}",
+
+            Price = random.Next(100, 1500),
+
+            // Include all condition values, including Defect
+            Condition = (Condition)random.Next(0, 5),
+
+            Status = sold
+                ? ListingStatus.Sold
+                : ListingStatus.Active,
+
+            CreatedDate = createdDate,
+
+            SoldDate = soldDate,
+
+            SoldPrice = sold
+                ? random.Next(100, 1500)
+                : null,
+
+            CategoryId = category.Id,
+
+            SellerId = seller.Id
         });
-        
-        context.Listings.AddRange(listings);
-        
-        await context.SaveChangesAsync();
     }
+
+    // Add an intentionally overpriced listing for analytics testing
+    listings.Add(new Listing
+    {
+        Title = "Overpriset sykkel",
+        Description = "Testannonse",
+
+        Price = 500000,
+
+        Condition = Condition.Used,
+
+        Status = ListingStatus.Active,
+
+        CreatedDate = DateTime.UtcNow,
+
+        CategoryId = categories[1].Id,
+
+        SellerId = users[0].Id
+    });
+
+    context.Listings.AddRange(listings);
+
+    await context.SaveChangesAsync();
+}
     
     // Seed Price Change
     public static async Task SeedPriceChangesAsync(

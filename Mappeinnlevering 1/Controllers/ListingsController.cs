@@ -23,7 +23,7 @@ public class ListingsController : ControllerBase
         return await _service.GetAllAsync();
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id;int}")]
     public async Task<ActionResult<ListingDtos>> GetById(int id)
     {
         var listing = await _service.GetByIdAsync(id);
@@ -32,6 +32,22 @@ public class ListingsController : ControllerBase
             return NotFound();
 
         return Ok(listing);
+    }
+    
+    [Authorize]
+    [HttpGet("my")]
+    public async Task<ActionResult<List<ListingDtos>>> GetMyList()
+    {
+        var sellerId = User.FindFirstValue(
+            ClaimTypes.NameIdentifier);
+
+        if (sellerId == null)
+            return Unauthorized();
+
+        var listings =
+            await _service.GetMyListingsAsync(sellerId);
+
+        return Ok(listings);
     }
 
     [Authorize]

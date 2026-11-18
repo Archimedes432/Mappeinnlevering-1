@@ -74,6 +74,17 @@ public class OfferService : IOfferService
             throw new InvalidOperationException(
                 "Offer must be at least 50% of asking price.");
 
+        var existingOffer =
+            await _offerRepository.GetPendingOfferAsync(
+                listingId,
+                buyerId);
+
+        if (existingOffer != null)
+        {
+            throw new InvalidOperationException(
+                "You alredy have a pending offer for this listing.");
+        }
+
         var offer = new Offer
         {
             ListingId = listingId,
@@ -104,6 +115,10 @@ public class OfferService : IOfferService
         if (offer == null)
             return false;
 
+        if (offer.Status != OfferStatus.Pending)
+            throw new InvalidOperationException(
+                "Only pending offers can be withdrawn.");
+
         offer.Status = OfferStatus.Withdrawn;
 
         _offerRepository.Update(offer);
@@ -120,9 +135,42 @@ public class OfferService : IOfferService
         if (offer == null)
             return false;
 
+        if (offer.Status != OfferStatus.Pending)
+            throw new InvalidOperationException(
+                "Only pending offers can be accepted.");
+
+        var listing =
+            await _listingRepository.GetByIdAsync(
+                offer.ListingId);
+
+        if (listing == null)
+            return false;
+
         offer.Status = OfferStatus.Accepted;
 
+        listing.Status = ListingStatus.Sold;
+        listing.SoldDate = DateTime.UtcNow;
+        listing.SoldPrice = offer.Amount;
+
         _offerRepository.Update(offer);
+
+        _listingRepository.Update(listing);
+
+        var otherOffers =
+            await _offerRepository.GetByListingIdAsync(
+                offer.ListingId);
+
+        foreach (var otherOffer in otherOffers)
+        {
+            if (otherOffer.Id != offer.Id &&
+                otherOffer.Status == OfferStatus.Pending)
+            {
+                otherOffer.Status =
+                    OfferStatus.Rejected;
+
+                _offerRepository.Update(otherOffer);
+            }
+        }
 
         await _offerRepository.SaveChangesAsync();
 
@@ -135,6 +183,10 @@ public class OfferService : IOfferService
 
         if (offer == null)
             return false;
+
+        if (offer.Status != OfferStatus.Pending)
+            throw new InvalidOperationException(
+                "Only pending offers can be rejected.");
 
         offer.Status = OfferStatus.Rejected;
 

@@ -52,6 +52,8 @@ using (var scope = app.Services.CreateScope())
     var context =
         services.GetRequiredService<ApplicationDbContext>();
 
+    await context.Database.MigrateAsync();
+
     await SeedData.SeedUsersAndRolesAsync(
         userManager,
         roleManager);
@@ -82,6 +84,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapIdentityApi<ApplicationUser>();
 

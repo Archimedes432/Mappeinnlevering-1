@@ -60,6 +60,29 @@ public class ListingService : IListingService
         };
     }
 
+    public async Task<List<ListingDtos>> GetMyListingsAsync(
+        string sellerId)
+    {
+        var listings =
+            await _repository.GetMyListingsAsync(sellerId);
+
+        return listings.Select(l => new ListingDtos
+        {
+            Id = l.Id,
+            Title = l.Title,
+            Description = l.Description,
+            Price = l.Price,
+            Condition = l.Condition,
+            Status = l.Status,
+            ImageUrl = l.ImageUrl,
+            CreateDate = l.CreatedDate,
+            SoldDate = l.SoldDate,
+            SoldPrice = l.SoldPrice,
+            CategoryId = l.CategoryId,
+            SellerId = l.SellerId
+        }).ToList();
+    }
+
     public async Task<ListingDtos> CreateAsync(
         CreateListingDto dto,
         string sellerId)
@@ -101,6 +124,19 @@ public class ListingService : IListingService
         listing.Description = dto.Description;
         listing.Condition = dto.Condition;
         listing.ImageUrl = dto.ImageUrl;
+
+        if (listing.Price != dto.Price)
+        {
+            var priceChange = new PriceChange
+            {
+                ListingId = listing.Id,
+                OldPrice = listing.Price,
+                NewPrice = dto.Price,
+                ChangedDate = DateTime.UtcNow
+            };
+
+            await _repository.AddPriceChangeAsync(priceChange);
+        }
 
         listing.Price = dto.Price;
 

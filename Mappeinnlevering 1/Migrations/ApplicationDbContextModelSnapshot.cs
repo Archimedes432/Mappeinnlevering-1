@@ -135,7 +135,7 @@ namespace Mappeinnlevering_1.Migrations
                     b.Property<int>("Condition")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("CreateDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
@@ -212,7 +212,7 @@ namespace Mappeinnlevering_1.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("ChangeDate")
+                    b.Property<DateTime>("ChangedDate")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("ListingId")

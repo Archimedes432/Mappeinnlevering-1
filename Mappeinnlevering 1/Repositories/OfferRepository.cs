@@ -1,5 +1,6 @@
 ﻿using Mappeinnlevering_1.Data;
 using Mappeinnlevering_1.Models;
+using Mappeinnlevering_1.Models.Enums;
 using Mappeinnlevering_1.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,6 +31,17 @@ public class OfferRepository : IOfferRepository
         return await _context.Offers
             .Where(o => o.ListingId == listingId)
             .ToListAsync();
+    }
+
+    public async Task<Offer?> GetPendingOfferAsync(
+        int listingId,
+        string buyerId)
+    {
+        return await _context.Offers
+            .FirstOrDefaultAsync(o =>
+                o.ListingId == listingId &&
+                o.BuyerId == buyerId &&
+                o.Status == OfferStatus.Pending);
     }
 
     public async Task AddAsync(Offer offer)

@@ -40,53 +40,82 @@ public class OffersController : ControllerBase
         int listingId,
         CreateOfferDto dto)
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userId = User.FindFirstValue(
+            ClaimTypes.NameIdentifier);
 
         if (userId == null)
             return Unauthorized();
 
-        var offer =
-            await _service.CreateAsync(
-                listingId,
-                userId,
-                dto);
-        
-        return Ok(offer);
+        try
+        {
+            var offer =
+                await _service.CreateAsync(
+                    listingId,
+                    userId,
+                    dto);
+
+            return Ok(offer);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(ex.Message);
+        }
     }
 
     [Authorize]
     [HttpPost("{id}/withdraw")]
-    public async Task<IActionResult> withdraw(int id)
+    public async Task<IActionResult> Withdraw(int id)
     {
-        var success = await _service.WithdrawAsync(id);
-        
-        if (!success)
-            return NotFound();
-        
-        return NoContent();
+        try
+        {
+            var success = await _service.WithdrawAsync(id);
+
+            if (!success)
+                return NotFound();
+
+            return NoContent();
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(ex.Message);
+        }
     }
 
     [Authorize]
     [HttpPost("{id}/accept")]
     public async Task<IActionResult> Accept(int id)
     {
-        var success = await _service.AcceptAsync(id);
-        
-        if (!success)
-            return NotFound();
-        
-        return NoContent();
+        try
+        {
+            var success = await _service.AcceptAsync(id);
+
+            if (!success)
+                return NotFound();
+
+            return NoContent();
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(ex.Message);
+        }
     }
 
     [Authorize]
     [HttpPost("{id}/reject")]
     public async Task<IActionResult> Reject(int id)
     {
-        var success = await _service.RejectAsync(id);
-        
-        if (!success)
-            return NotFound();
-        
-        return NoContent();
+        try
+        {
+            var success = await _service.RejectAsync(id);
+
+            if (!success)
+                return NotFound();
+
+            return NoContent();
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(ex.Message);
+        }
     }
 }

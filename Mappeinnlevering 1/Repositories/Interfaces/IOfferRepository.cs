@@ -7,6 +7,10 @@ public interface IOfferRepository
     Task<List<Offer>> GetAllAsync();
 
     Task<Offer?> GetByIdAsync(int id);
+    
+    Task<Offer?> GetPendingOfferAsync(
+        int listingId,
+        string buyerId);
 
     Task<List<Offer>> GetByListingIdAsync(int listingId);
 

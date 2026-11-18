@@ -1,0 +1,78 @@
+﻿### LOGIN
+### Verify that a user can authenticate and receive a JWT token
+POST http://localhost:5221/login?useCookies=false
+Content-Type: application/json
+
+{
+  "email": "ola@brukt.no",
+  "password": "User123!"
+}
+
+###
+
+### GET CURRENT USER INFORMATION
+### Verify that the JWT token is valid and authentication works
+GET http://localhost:5221/manage/info
+Authorization: Bearer CfDJ8Hnm2kXp4atKtDGhYkLR7uN39rm2cjnWMdOyo6pLOQnNSxnBxCsD9txLdzCbhh_y2aJ48ivDK9SqycdFRVOS72HYw-rCQiTsc0BhAagiRGVgO53VlyeskIDHuCs38O3xzAHfpujXi2rYcHnfwz5-BpcGJSD9tPq3LRGofv0z3Nj9PYMY-K7hILiN8RGTqSW_mtjXWZ10wZezTStGsBTVo7RzjEYJxl33twhkpbpO2aUi6Mg6mm5cHwpoX95KGR_-NwA0Sj0Lbnu4IjhnHa5VFDvu7BCO1xfHfCsE0uErp5e8K5ixqYA1iqiFoo0AaoYVXfScZJ0-5TzgIDRj1wSbY9TlJJhS-ZhFsY3pj8kq4SSHDVVJExcHMHnRJecDn9FzqIFd622eN6t4_gP1c6Clp4vVOKIJkx_BQKOs9qIvU-mWkiMmwS7ftR5VjMhS74W8M_NNU6Gq-VHMzvhXF1fg5ZxMN4PslUQBxp3e2M-e4U0tFnJMRhXb3-4ikO8aYG4shOTNWjFabDV-V5KypHcUVDwTTZAEtM-IAxW_PHv6LLB4oIpLfGDFemcktM4glhPi_0-CJLa-PH2lfXrgCSqEUqubvnGdJ5QhT1AZUFO8A6sIA29RoITuyGaKj_puTBhtdGzKCtxmkvNr51rHQDSZmkPhscELUR3-aqSQhn65JgnnO7DbUd3p2UTVFQhur552fcewYgb7eX7xf9PdUn960pqsOpvgrMMVlx44lZBGu0k2l-kKmO31vA3iAfSKzwyQDaaqiiUZ8B3_r1o5xaiIwuT8XH-Vffu_JL3mBaLGnR44
+
+###
+
+### GET MY LISTINGS
+### Verify that authorized users can retrieve their own listings
+GET http://localhost:5221/api/listings/my
+Authorization: Bearer CfDJ8Hnm2kXp4atKtDGhYkLR7uN39rm2cjnWMdOyo6pLOQnNSxnBxCsD9txLdzCbhh_y2aJ48ivDK9SqycdFRVOS72HYw-rCQiTsc0BhAagiRGVgO53VlyeskIDHuCs38O3xzAHfpujXi2rYcHnfwz5-BpcGJSD9tPq3LRGofv0z3Nj9PYMY-K7hILiN8RGTqSW_mtjXWZ10wZezTStGsBTVo7RzjEYJxl33twhkpbpO2aUi6Mg6mm5cHwpoX95KGR_-NwA0Sj0Lbnu4IjhnHa5VFDvu7BCO1xfHfCsE0uErp5e8K5ixqYA1iqiFoo0AaoYVXfScZJ0-5TzgIDRj1wSbY9TlJJhS-ZhFsY3pj8kq4SSHDVVJExcHMHnRJecDn9FzqIFd622eN6t4_gP1c6Clp4vVOKIJkx_BQKOs9qIvU-mWkiMmwS7ftR5VjMhS74W8M_NNU6Gq-VHMzvhXF1fg5ZxMN4PslUQBxp3e2M-e4U0tFnJMRhXb3-4ikO8aYG4shOTNWjFabDV-V5KypHcUVDwTTZAEtM-IAxW_PHv6LLB4oIpLfGDFemcktM4glhPi_0-CJLa-PH2lfXrgCSqEUqubvnGdJ5QhT1AZUFO8A6sIA29RoITuyGaKj_puTBhtdGzKCtxmkvNr51rHQDSZmkPhscELUR3-aqSQhn65JgnnO7DbUd3p2UTVFQhur552fcewYgb7eX7xf9PdUn960pqsOpvgrMMVlx44lZBGu0k2l-kKmO31vA3iAfSKzwyQDaaqiiUZ8B3_r1o5xaiIwuT8XH-Vffu_JL3mBaLGnR44
+
+###
+
+### GET ALL ACTIVE LISTINGS
+### Verify that only active listings are returned
+GET http://localhost:5221/api/listings
+
+###
+
+### CREATE OFFER
+### Verify that a valid offer can be created on an active listing
+POST http://localhost:5221/api/offers/24
+Authorization: Bearer CfDJ8Hnm2kXp4atKtDGhYkLR7uN39rm2cjnWMdOyo6pLOQnNSxnBxCsD9txLdzCbhh_y2aJ48ivDK9SqycdFRVOS72HYw-rCQiTsc0BhAagiRGVgO53VlyeskIDHuCs38O3xzAHfpujXi2rYcHnfwz5-BpcGJSD9tPq3LRGofv0z3Nj9PYMY-K7hILiN8RGTqSW_mtjXWZ10wZezTStGsBTVo7RzjEYJxl33twhkpbpO2aUi6Mg6mm5cHwpoX95KGR_-NwA0Sj0Lbnu4IjhnHa5VFDvu7BCO1xfHfCsE0uErp5e8K5ixqYA1iqiFoo0AaoYVXfScZJ0-5TzgIDRj1wSbY9TlJJhS-ZhFsY3pj8kq4SSHDVVJExcHMHnRJecDn9FzqIFd622eN6t4_gP1c6Clp4vVOKIJkx_BQKOs9qIvU-mWkiMmwS7ftR5VjMhS74W8M_NNU6Gq-VHMzvhXF1fg5ZxMN4PslUQBxp3e2M-e4U0tFnJMRhXb3-4ikO8aYG4shOTNWjFabDV-V5KypHcUVDwTTZAEtM-IAxW_PHv6LLB4oIpLfGDFemcktM4glhPi_0-CJLa-PH2lfXrgCSqEUqubvnGdJ5QhT1AZUFO8A6sIA29RoITuyGaKj_puTBhtdGzKCtxmkvNr51rHQDSZmkPhscELUR3-aqSQhn65JgnnO7DbUd3p2UTVFQhur552fcewYgb7eX7xf9PdUn960pqsOpvgrMMVlx44lZBGu0k2l-kKmO31vA3iAfSKzwyQDaaqiiUZ8B3_r1o5xaiIwuT8XH-Vffu_JL3mBaLGnR44
+Content-Type: application/json
+
+{
+  "amount": 500
+}
+
+###
+
+### DUPLICATE OFFER TEST
+### Verify that a user cannot have multiple pending offers on the same listing
+POST http://localhost:5221/api/offers/24
+Authorization: Bearer CfDJ8Hnm2kXp4atKtDGhYkLR7uN39rm2cjnWMdOyo6pLOQnNSxnBxCsD9txLdzCbhh_y2aJ48ivDK9SqycdFRVOS72HYw-rCQiTsc0BhAagiRGVgO53VlyeskIDHuCs38O3xzAHfpujXi2rYcHnfwz5-BpcGJSD9tPq3LRGofv0z3Nj9PYMY-K7hILiN8RGTqSW_mtjXWZ10wZezTStGsBTVo7RzjEYJxl33twhkpbpO2aUi6Mg6mm5cHwpoX95KGR_-NwA0Sj0Lbnu4IjhnHa5VFDvu7BCO1xfHfCsE0uErp5e8K5ixqYA1iqiFoo0AaoYVXfScZJ0-5TzgIDRj1wSbY9TlJJhS-ZhFsY3pj8kq4SSHDVVJExcHMHnRJecDn9FzqIFd622eN6t4_gP1c6Clp4vVOKIJkx_BQKOs9qIvU-mWkiMmwS7ftR5VjMhS74W8M_NNU6Gq-VHMzvhXF1fg5ZxMN4PslUQBxp3e2M-e4U0tFnJMRhXb3-4ikO8aYG4shOTNWjFabDV-V5KypHcUVDwTTZAEtM-IAxW_PHv6LLB4oIpLfGDFemcktM4glhPi_0-CJLa-PH2lfXrgCSqEUqubvnGdJ5QhT1AZUFO8A6sIA29RoITuyGaKj_puTBhtdGzKCtxmkvNr51rHQDSZmkPhscELUR3-aqSQhn65JgnnO7DbUd3p2UTVFQhur552fcewYgb7eX7xf9PdUn960pqsOpvgrMMVlx44lZBGu0k2l-kKmO31vA3iAfSKzwyQDaaqiiUZ8B3_r1o5xaiIwuT8XH-Vffu_JL3mBaLGnR44
+Content-Type: application/json
+
+{
+  "amount": 500
+}
+
+###
+
+### GET OFFER
+### Verify that the offer was created successfully
+GET http://localhost:5221/api/offers/36
+
+###
+
+### ACCEPT OFFER
+### Verify that the offer can be accepted and the listing is marked as sold
+POST http://localhost:5221/api/offers/36/accept
+Authorization: Bearer CfDJ8Hnm2kXp4atKtDGhYkLR7uN39rm2cjnWMdOyo6pLOQnNSxnBxCsD9txLdzCbhh_y2aJ48ivDK9SqycdFRVOS72HYw-rCQiTsc0BhAagiRGVgO53VlyeskIDHuCs38O3xzAHfpujXi2rYcHnfwz5-BpcGJSD9tPq3LRGofv0z3Nj9PYMY-K7hILiN8RGTqSW_mtjXWZ10wZezTStGsBTVo7RzjEYJxl33twhkpbpO2aUi6Mg6mm5cHwpoX95KGR_-NwA0Sj0Lbnu4IjhnHa5VFDvu7BCO1xfHfCsE0uErp5e8K5ixqYA1iqiFoo0AaoYVXfScZJ0-5TzgIDRj1wSbY9TlJJhS-ZhFsY3pj8kq4SSHDVVJExcHMHnRJecDn9FzqIFd622eN6t4_gP1c6Clp4vVOKIJkx_BQKOs9qIvU-mWkiMmwS7ftR5VjMhS74W8M_NNU6Gq-VHMzvhXF1fg5ZxMN4PslUQBxp3e2M-e4U0tFnJMRhXb3-4ikO8aYG4shOTNWjFabDV-V5KypHcUVDwTTZAEtM-IAxW_PHv6LLB4oIpLfGDFemcktM4glhPi_0-CJLa-PH2lfXrgCSqEUqubvnGdJ5QhT1AZUFO8A6sIA29RoITuyGaKj_puTBhtdGzKCtxmkvNr51rHQDSZmkPhscELUR3-aqSQhn65JgnnO7DbUd3p2UTVFQhur552fcewYgb7eX7xf9PdUn960pqsOpvgrMMVlx44lZBGu0k2l-kKmO31vA3iAfSKzwyQDaaqiiUZ8B3_r1o5xaiIwuT8XH-Vffu_JL3mBaLGnR44
+
+###
+
+### VERIFY ACCEPTED OFFER
+### Verify that the offer status changed to Accepted
+GET http://localhost:5221/api/offers/36
+
+###
+
+### VERIFY ACTIVE LISTINGS
+### Verify that the sold listing no longer appears among active listings
+GET http://localhost:5221/api/listings
