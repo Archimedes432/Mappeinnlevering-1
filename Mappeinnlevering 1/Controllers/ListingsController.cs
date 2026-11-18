@@ -74,14 +74,32 @@ public class ListingsController : ControllerBase
         int id,
         UpdateListingDto dto)
     {
+        var userId = User.FindFirstValue(
+            ClaimTypes.NameIdentifier);
+
+        var isAdmin =
+            User.IsInRole("Admin");
+
+        if (userId == null)
+            return Unauthorized();
+
         try
         {
-            var updated = await _service.UpdateAsync(id, dto);
-            
+            var updated =
+                await _service.UpdateAsync(
+                    id,
+                    dto,
+                    userId,
+                    isAdmin);
+
             if (!updated)
                 return NotFound();
-            
+
             return NoContent();
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Forbid();
         }
         catch (InvalidOperationException ex)
         {
@@ -93,11 +111,31 @@ public class ListingsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var deleted = await _service.DeleteAsync(id);
-        
-        if (!deleted)
-            return NotFound();
-        
-        return NoContent();
+        var userId = User.FindFirstValue(
+            ClaimTypes.NameIdentifier);
+
+        var isAdmin =
+            User.IsInRole("Admin");
+
+        if (userId == null)
+            return Unauthorized();
+
+        try
+        {
+            var deleted =
+                await _service.DeleteAsync(
+                    id,
+                    userId,
+                    isAdmin);
+
+            if (!deleted)
+                return NotFound();
+
+            return NoContent();
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Forbid();
+        }
     }
 }

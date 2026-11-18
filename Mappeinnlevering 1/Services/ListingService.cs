@@ -109,12 +109,20 @@ public class ListingService : IListingService
 
     public async Task<bool> UpdateAsync(
         int id,
-        UpdateListingDto dto)
+        UpdateListingDto dto,
+        string userId,
+        bool isAdmin)
     {
         var listing = await _repository.GetByIdAsync(id);
 
         if (listing == null)
             return false;
+
+        if (listing.SellerId != userId &&
+            !isAdmin)
+        {
+            throw new UnauthorizedAccessException();
+        }
 
         if (listing.Status == ListingStatus.Sold)
             throw new InvalidOperationException(
@@ -147,12 +155,21 @@ public class ListingService : IListingService
         return true;
     }
 
-    public async Task<bool> DeleteAsync(int id)
+    public async Task<bool> DeleteAsync(
+        int id,
+        string userId,
+        bool isAdmin)
     {
         var listing = await _repository.GetByIdAsync(id);
 
         if (listing == null)
             return false;
+
+        if (listing.SellerId != userId &&
+            !isAdmin)
+        {
+            throw new UnauthorizedAccessException();
+        }
 
         listing.Status = ListingStatus.Removed;
 
