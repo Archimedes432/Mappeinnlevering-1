@@ -11,7 +11,7 @@ namespace Mappeinnlevering_1.Controllers;
 public class OffersController : ControllerBase
 {
     private readonly IOfferService _service;
-    
+
     public OffersController(IOfferService service)
     {
         _service = service;
@@ -58,6 +58,12 @@ public class OffersController : ControllerBase
         }
         catch (InvalidOperationException ex)
         {
+            if (ex.Message.Contains("own listing") ||
+                ex.Message.Contains("50%"))
+            {
+                return BadRequest(ex.Message);
+            }
+
             return Conflict(ex.Message);
         }
     }
