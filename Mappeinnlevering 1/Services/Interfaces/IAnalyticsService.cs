@@ -14,4 +14,6 @@ public interface IAnalyticsService
     Task<CategoryStatsDto?> GetCategoryStatsAsync(int categoryId);
 
     Task<List<CategoryStatsDto>> GetOverviewAsync();
+
+    Task<PriceHistoryDto> GetPriceHistoryAsync(int listingId);
 }

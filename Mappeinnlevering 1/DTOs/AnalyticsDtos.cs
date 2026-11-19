@@ -50,3 +50,18 @@ public class CategoryStatsDto
     public double? AverageDiscountPercent { get; set; } 
     public double? SalesRate { get; set; } 
 }
+
+public class PriceHistoryDto
+{
+    public int ListingId { get; set; }
+    public int CurrentPrice { get; set; }
+    public List<PriceChangeDto> Changes { get; set; } = new();
+}
+
+public class PriceChangeDto
+{
+    public int OldPrice { get; set; }
+    public int NewPrice { get; set; }
+    public DateTime ChangedDate { get; set; }
+}
+
