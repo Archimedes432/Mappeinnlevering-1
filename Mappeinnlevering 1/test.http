@@ -1,12 +1,15 @@
 ﻿### LOGIN
 ### Verify that a user can authenticate and receive a JWT token
-POST http://localhost:5221/login?useCookies=false
+POST http://localhost:5221/api/auth/login
 Content-Type: application/json
 
 {
   "email": "ola@brukt.no",
   "password": "User123!"
 }
+
+> {% client.global.set("token", response.body.accessToken); %}
+
 
 ###
 
@@ -200,3 +203,96 @@ Authorization: Bearer CfDJ8Hnm2kXp4atKtDGhYkLR7uM6_HnQIRYa3PmWHPAKh9-ouo1AcexPAO
 # Expected result: 204 No Content
 DELETE http://localhost:5221/api/listings/41
 Authorization: Bearer CfDJ8Hnm2kXp4atKtDGhYkLR7uM6_HnQIRYa3PmWHPAKh9-ouo1AcexPAOpeN2VIR4QubffsAqIpUFo9hDmAgihSu1H4weCX38SZH3a9ox78jvI6Ng_bTjYWFKh-CSxCzM-PVI9PSElztICPq47WwBeaDG3U9Y3qxCrflN-1zPesCaj-ZHit7kJyLRx3df0t1EmzwDcSbj1aahfsRvGFOsM5PK0MzoVywAL0ZHRaLHyOZZbmgt4iDj_TYLijFi5hsft1kcYkWWIATAk-y7J6ihnjytj3hMq2XegTvwzEJccevTIOh53GgEzOWQaJ97sQbzthA1HWscwmGoeo9VO6WcbVLAM1kRW3bE66NYzYNEkD5zpGuz9YwqN6eMeWZ6-mmr-RKaiujy5yMTHlhaCVa5QQ4Q4nWt3oUNmLGhroWVIY2Ybp6YavWHlzND9JKlRC-cjEiH_wH8_gLyAscZskMhRqBL0V_XaqbrLk42pw-MBVZ8ckykfyKOGFhrHrOI_vv6nc0CSc_lZ9FC8GxMXCbW46tvFlRF7iLL5XcCEgYgXM1AAQ7QH1uubPbW3PTi9K6PeNo847WYFmUJkeEEKlqIp3lFKXsbFL-LHXQwgsQ-gl3uS_f13_vO-tRor6jesVFFc2DPtX2DxjhZ0sxthwjjc4O21ZcZqlSHKPbguElCrQdkxkqQ99CFhAHSd1Xb1Z08LmpQjSqdIP9XVelhoUD05qp_E2r0f8hQIDDoYBVM8ZAA2sYwdo7LCG7IAgEF7I7vNQTzgeco12IcmsRnjko9UlRBNvnMw4dDLwTt3RI8bag7No
+
+
+##########################################################################################
+##########################################################################################
+##########################################################################################
+
+
+
+# AUTH - ME
+# Verify that the logged in user gets id, email, name and roles.
+# Expected result: 200 OK
+GET http://localhost:5221/api/auth/me
+Authorization: Bearer {{token}}
+
+###
+
+# AUTH - ME WITHOUT TOKEN
+# Expected result: 401 Unauthorized
+GET http://localhost:5221/api/auth/me
+
+
+
+###
+
+# ANALYTICS - PRICE SUGGESTION
+# Expected result: 200 OK
+GET http://localhost:5221/api/analytics/price-suggestion?categoryId=1&condition=Good
+Authorization: Bearer {{token}}
+
+###
+
+# ANALYTICS - PRICE SUGGESTION WITHOUT TOKEN
+# Expected result: 401 Unauthorized
+GET http://localhost:5221/api/analytics/price-suggestion?categoryId=1&condition=Good
+
+###
+
+# ANALYTICS - CATEGORY STATS
+# Expected result: 200 OK
+GET http://localhost:5221/api/analytics/categories/1/stats
+
+###
+
+# ANALYTICS - CATEGORY STATS UNKNOWN CATEGORY
+# Expected result: 404 Not Found
+GET http://localhost:5221/api/analytics/categories/999/stats
+
+###
+
+# ANALYTICS - OVERVIEW
+# Expected result: 200 OK
+GET http://localhost:5221/api/analytics/overview
+
+###
+
+# ANALYTICS - PRICE HISTORY
+# Expected result: 200 OK
+GET http://localhost:5221/api/analytics/listings/1/price-history
+
+###
+
+# FAVORITES - ADD
+# Expected result: 201 Created
+POST http://localhost:5221/api/favorites/1
+Authorization: Bearer {{token}}
+
+###
+
+# FAVORITES - ADD SAME AGAIN
+# Expected result: 409 Conflict
+POST http://localhost:5221/api/favorites/1
+Authorization: Bearer {{token}}
+
+###
+
+# FAVORITES - GET MY FAVORITES
+# Expected result: 200 OK
+GET http://localhost:5221/api/favorites
+Authorization: Bearer {{token}}
+
+###
+
+# FAVORITES - REMOVE
+# Expected result: 204 No Content
+DELETE http://localhost:5221/api/favorites/1
+Authorization: Bearer {{token}}
+
+###
+
+# FAVORITES - WITHOUT TOKEN
+# Expected result: 401 Unauthorized
+GET http://localhost:5221/api/favorites
+

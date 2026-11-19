@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 namespace Mappeinnlevering_1.Controllers;
 
 
-
+[ApiController]
+[Route("api/analytics")]
 public class AnalyticsController : ControllerBase
 {
     private readonly IAnalyticsService _analytics;
@@ -51,4 +52,17 @@ public class AnalyticsController : ControllerBase
         List<CategoryStatsDto> result = await _analytics.GetOverviewAsync();
         return Ok(result);
     }
+    
+    [HttpGet("listings/{id:int}/price-history")]
+    public async Task<ActionResult<PriceHistoryDto>> GetPriceHistory(int id)
+    {
+        PriceHistoryDto? result = await _analytics.GetPriceHistoryAsync(id);
+        if (result == null)
+        {
+            return NotFound();
+        }
+        return Ok(result);
+    }
+
+
 }

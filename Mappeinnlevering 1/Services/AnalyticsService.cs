@@ -126,7 +126,7 @@ public class AnalyticsService : IAnalyticsService
     int total = sold.Count + active + removed;
     if (total > 0)
     {
-      stats.SalesRate = Math.Round((double)sold.Count / 4);
+      stats.SalesRate = Math.Round((double)sold.Count / total, 4);
     }
 
     if (sold.Count == 0)
@@ -173,6 +173,29 @@ public class AnalyticsService : IAnalyticsService
       {
         result.Add(stats);
       }
+    }
+    return result;
+  }
+
+  public async Task<PriceHistoryDto> GetPriceHistoryAsync(int listingId)
+  {
+    Listing? listing = await _repo.GetListingAsync(listingId);
+    if (listing == null)
+    {
+      return null;
+    }
+
+    PriceHistoryDto result = new PriceHistoryDto();
+    result.ListingId = listing.Id;
+    result.CurrentPrice = listing.Price;
+
+    foreach (PriceChange pc in listing.PriceChanges.OrderBy(pc => pc.ChangedDate))
+    {
+      PriceChangeDto change = new PriceChangeDto();
+      change.OldPrice = pc.OldPrice;
+      change.NewPrice = pc.NewPrice;
+      change.ChangedDate = pc.ChangedDate;
+      result.Changes.Add(change);
     }
     return result;
   }
