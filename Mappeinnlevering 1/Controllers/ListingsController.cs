@@ -23,7 +23,7 @@ public class ListingsController : ControllerBase
         return await _service.GetAllAsync();
     }
 
-    [HttpGet("{id;int}")]
+    [HttpGet("{id:int}")]
     public async Task<ActionResult<ListingDtos>> GetById(int id)
     {
         var listing = await _service.GetByIdAsync(id);

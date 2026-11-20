@@ -12,16 +12,26 @@ Content-Type: application/json
 
 ###
 
-### GET ALL ACTIVE LISTINGS
-### Verify that only active listings are returned
-GET http://localhost:5221/api/listings
+### CREATE LISTING
+### Verify that an authenticated user can create a listing
+POST http://localhost:5221/api/listings
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Video demonstration listing",
+  "description": "Created during presentation",
+  "price": 1000,
+  "condition": "Good",
+  "categoryId": 1
+}
 
 ###
 
 ### CREATE OFFER
 ### Verify that a valid offer can be created on an active listing
-POST http://localhost:5221/api/offers/24
-Authorization: Bearer CfDJ8Hnm2kXp4atKtDGhYkLR7uN39rm2cjnWMdOyo6pLOQnNSxnBxCsD9txLdzCbhh_y2aJ48ivDK9SqycdFRVOS72HYw-rCQiTsc0BhAagiRGVgO53VlyeskIDHuCs38O3xzAHfpujXi2rYcHnfwz5-BpcGJSD9tPq3LRGofv0z3Nj9PYMY-K7hILiN8RGTqSW_mtjXWZ10wZezTStGsBTVo7RzjEYJxl33twhkpbpO2aUi6Mg6mm5cHwpoX95KGR_-NwA0Sj0Lbnu4IjhnHa5VFDvu7BCO1xfHfCsE0uErp5e8K5ixqYA1iqiFoo0AaoYVXfScZJ0-5TzgIDRj1wSbY9TlJJhS-ZhFsY3pj8kq4SSHDVVJExcHMHnRJecDn9FzqIFd622eN6t4_gP1c6Clp4vVOKIJkx_BQKOs9qIvU-mWkiMmwS7ftR5VjMhS74W8M_NNU6Gq-VHMzvhXF1fg5ZxMN4PslUQBxp3e2M-e4U0tFnJMRhXb3-4ikO8aYG4shOTNWjFabDV-V5KypHcUVDwTTZAEtM-IAxW_PHv6LLB4oIpLfGDFemcktM4glhPi_0-CJLa-PH2lfXrgCSqEUqubvnGdJ5QhT1AZUFO8A6sIA29RoITuyGaKj_puTBhtdGzKCtxmkvNr51rHQDSZmkPhscELUR3-aqSQhn65JgnnO7DbUd3p2UTVFQhur552fcewYgb7eX7xf9PdUn960pqsOpvgrMMVlx44lZBGu0k2l-kKmO31vA3iAfSKzwyQDaaqiiUZ8B3_r1o5xaiIwuT8XH-Vffu_JL3mBaLGnR44
+POST http://localhost:5221/api/offers/25
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -33,25 +43,32 @@ Content-Type: application/json
 ### DUPLICATE OFFER TEST
 ### Verify that a user cannot have multiple pending offers on the same listing
 POST http://localhost:5221/api/offers/24
-Authorization: Bearer CfDJ8Hnm2kXp4atKtDGhYkLR7uN39rm2cjnWMdOyo6pLOQnNSxnBxCsD9txLdzCbhh_y2aJ48ivDK9SqycdFRVOS72HYw-rCQiTsc0BhAagiRGVgO53VlyeskIDHuCs38O3xzAHfpujXi2rYcHnfwz5-BpcGJSD9tPq3LRGofv0z3Nj9PYMY-K7hILiN8RGTqSW_mtjXWZ10wZezTStGsBTVo7RzjEYJxl33twhkpbpO2aUi6Mg6mm5cHwpoX95KGR_-NwA0Sj0Lbnu4IjhnHa5VFDvu7BCO1xfHfCsE0uErp5e8K5ixqYA1iqiFoo0AaoYVXfScZJ0-5TzgIDRj1wSbY9TlJJhS-ZhFsY3pj8kq4SSHDVVJExcHMHnRJecDn9FzqIFd622eN6t4_gP1c6Clp4vVOKIJkx_BQKOs9qIvU-mWkiMmwS7ftR5VjMhS74W8M_NNU6Gq-VHMzvhXF1fg5ZxMN4PslUQBxp3e2M-e4U0tFnJMRhXb3-4ikO8aYG4shOTNWjFabDV-V5KypHcUVDwTTZAEtM-IAxW_PHv6LLB4oIpLfGDFemcktM4glhPi_0-CJLa-PH2lfXrgCSqEUqubvnGdJ5QhT1AZUFO8A6sIA29RoITuyGaKj_puTBhtdGzKCtxmkvNr51rHQDSZmkPhscELUR3-aqSQhn65JgnnO7DbUd3p2UTVFQhur552fcewYgb7eX7xf9PdUn960pqsOpvgrMMVlx44lZBGu0k2l-kKmO31vA3iAfSKzwyQDaaqiiUZ8B3_r1o5xaiIwuT8XH-Vffu_JL3mBaLGnR44
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "amount": 500
 }
 
-###
+##########################################################################################
 
+###
 ### ACCEPT OFFER
 ### Verify that the offer can be accepted and the listing is marked as sold
 POST http://localhost:5221/api/offers/36/accept
-Authorization: Bearer CfDJ8Hnm2kXp4atKtDGhYkLR7uN39rm2cjnWMdOyo6pLOQnNSxnBxCsD9txLdzCbhh_y2aJ48ivDK9SqycdFRVOS72HYw-rCQiTsc0BhAagiRGVgO53VlyeskIDHuCs38O3xzAHfpujXi2rYcHnfwz5-BpcGJSD9tPq3LRGofv0z3Nj9PYMY-K7hILiN8RGTqSW_mtjXWZ10wZezTStGsBTVo7RzjEYJxl33twhkpbpO2aUi6Mg6mm5cHwpoX95KGR_-NwA0Sj0Lbnu4IjhnHa5VFDvu7BCO1xfHfCsE0uErp5e8K5ixqYA1iqiFoo0AaoYVXfScZJ0-5TzgIDRj1wSbY9TlJJhS-ZhFsY3pj8kq4SSHDVVJExcHMHnRJecDn9FzqIFd622eN6t4_gP1c6Clp4vVOKIJkx_BQKOs9qIvU-mWkiMmwS7ftR5VjMhS74W8M_NNU6Gq-VHMzvhXF1fg5ZxMN4PslUQBxp3e2M-e4U0tFnJMRhXb3-4ikO8aYG4shOTNWjFabDV-V5KypHcUVDwTTZAEtM-IAxW_PHv6LLB4oIpLfGDFemcktM4glhPi_0-CJLa-PH2lfXrgCSqEUqubvnGdJ5QhT1AZUFO8A6sIA29RoITuyGaKj_puTBhtdGzKCtxmkvNr51rHQDSZmkPhscELUR3-aqSQhn65JgnnO7DbUd3p2UTVFQhur552fcewYgb7eX7xf9PdUn960pqsOpvgrMMVlx44lZBGu0k2l-kKmO31vA3iAfSKzwyQDaaqiiUZ8B3_r1o5xaiIwuT8XH-Vffu_JL3mBaLGnR44
-
+Authorization: Bearer {{token}}
 ###
 
 ### VERIFY ACCEPTED OFFER
 ### Verify that the offer status changed to Accepted
 GET http://localhost:5221/api/offers/36
+
+
+###
+
+### GET ALL ACTIVE LISTINGS
+### Verify that only active listings are returned
+GET http://localhost:5221/api/listings
 
 ###
 
