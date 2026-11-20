@@ -10,21 +10,6 @@ Content-Type: application/json
 
 > {% client.global.set("token", response.body.accessToken); %}
 
-
-###
-
-### GET CURRENT USER INFORMATION
-### Verify that the JWT token is valid and authentication works
-GET http://localhost:5221/manage/info
-Authorization: Bearer CfDJ8Hnm2kXp4atKtDGhYkLR7uN39rm2cjnWMdOyo6pLOQnNSxnBxCsD9txLdzCbhh_y2aJ48ivDK9SqycdFRVOS72HYw-rCQiTsc0BhAagiRGVgO53VlyeskIDHuCs38O3xzAHfpujXi2rYcHnfwz5-BpcGJSD9tPq3LRGofv0z3Nj9PYMY-K7hILiN8RGTqSW_mtjXWZ10wZezTStGsBTVo7RzjEYJxl33twhkpbpO2aUi6Mg6mm5cHwpoX95KGR_-NwA0Sj0Lbnu4IjhnHa5VFDvu7BCO1xfHfCsE0uErp5e8K5ixqYA1iqiFoo0AaoYVXfScZJ0-5TzgIDRj1wSbY9TlJJhS-ZhFsY3pj8kq4SSHDVVJExcHMHnRJecDn9FzqIFd622eN6t4_gP1c6Clp4vVOKIJkx_BQKOs9qIvU-mWkiMmwS7ftR5VjMhS74W8M_NNU6Gq-VHMzvhXF1fg5ZxMN4PslUQBxp3e2M-e4U0tFnJMRhXb3-4ikO8aYG4shOTNWjFabDV-V5KypHcUVDwTTZAEtM-IAxW_PHv6LLB4oIpLfGDFemcktM4glhPi_0-CJLa-PH2lfXrgCSqEUqubvnGdJ5QhT1AZUFO8A6sIA29RoITuyGaKj_puTBhtdGzKCtxmkvNr51rHQDSZmkPhscELUR3-aqSQhn65JgnnO7DbUd3p2UTVFQhur552fcewYgb7eX7xf9PdUn960pqsOpvgrMMVlx44lZBGu0k2l-kKmO31vA3iAfSKzwyQDaaqiiUZ8B3_r1o5xaiIwuT8XH-Vffu_JL3mBaLGnR44
-
-###
-
-### GET MY LISTINGS
-### Verify that authorized users can retrieve their own listings
-GET http://localhost:5221/api/listings/my
-Authorization: Bearer CfDJ8Hnm2kXp4atKtDGhYkLR7uN39rm2cjnWMdOyo6pLOQnNSxnBxCsD9txLdzCbhh_y2aJ48ivDK9SqycdFRVOS72HYw-rCQiTsc0BhAagiRGVgO53VlyeskIDHuCs38O3xzAHfpujXi2rYcHnfwz5-BpcGJSD9tPq3LRGofv0z3Nj9PYMY-K7hILiN8RGTqSW_mtjXWZ10wZezTStGsBTVo7RzjEYJxl33twhkpbpO2aUi6Mg6mm5cHwpoX95KGR_-NwA0Sj0Lbnu4IjhnHa5VFDvu7BCO1xfHfCsE0uErp5e8K5ixqYA1iqiFoo0AaoYVXfScZJ0-5TzgIDRj1wSbY9TlJJhS-ZhFsY3pj8kq4SSHDVVJExcHMHnRJecDn9FzqIFd622eN6t4_gP1c6Clp4vVOKIJkx_BQKOs9qIvU-mWkiMmwS7ftR5VjMhS74W8M_NNU6Gq-VHMzvhXF1fg5ZxMN4PslUQBxp3e2M-e4U0tFnJMRhXb3-4ikO8aYG4shOTNWjFabDV-V5KypHcUVDwTTZAEtM-IAxW_PHv6LLB4oIpLfGDFemcktM4glhPi_0-CJLa-PH2lfXrgCSqEUqubvnGdJ5QhT1AZUFO8A6sIA29RoITuyGaKj_puTBhtdGzKCtxmkvNr51rHQDSZmkPhscELUR3-aqSQhn65JgnnO7DbUd3p2UTVFQhur552fcewYgb7eX7xf9PdUn960pqsOpvgrMMVlx44lZBGu0k2l-kKmO31vA3iAfSKzwyQDaaqiiUZ8B3_r1o5xaiIwuT8XH-Vffu_JL3mBaLGnR44
-
 ###
 
 ### GET ALL ACTIVE LISTINGS
@@ -54,12 +39,6 @@ Content-Type: application/json
 {
   "amount": 500
 }
-
-###
-
-### GET OFFER
-### Verify that the offer was created successfully
-GET http://localhost:5221/api/offers/36
 
 ###
 
@@ -206,10 +185,6 @@ Authorization: Bearer CfDJ8Hnm2kXp4atKtDGhYkLR7uM6_HnQIRYa3PmWHPAKh9-ouo1AcexPAO
 
 
 ##########################################################################################
-##########################################################################################
-##########################################################################################
-
-
 
 # AUTH - ME
 # Verify that the logged in user gets id, email, name and roles.
